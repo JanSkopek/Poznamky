@@ -20,7 +20,39 @@ const appHTML = `
 // Vloží HTML do stránky
 document.body.innerHTML = appHTML;
 
+// Třída pro správu uživatelů
+class UserManager {
+  constructor() {
+    this.users = JSON.parse(localStorage.getItem("users")) || {};
+  }
+
+  register(username, password) {
+    if (this.users[username]) {
+      alert("Uživatel již existuje.");
+      return false;
+    }
+    this.users[username] = { password, notes: [] };
+    this.saveUsers();
+    alert("Registrace úspěšná.");
+    return true;
+  }
+
+  login(username, password) {
+    const user = this.users[username];
+    if (!user || user.password !== password) {
+      alert("Neplatné přihlašovací údaje.");
+      return null;
+    }
+    return username;
+  }
+
+  saveUsers() {
+    localStorage.setItem("users", JSON.stringify(this.users));
+  }
+}
+
 // Inicializace správců
+const userManager = new UserManager();
 let currentUser = null;
 
 // DOM prvky
@@ -37,7 +69,7 @@ document.getElementById("register").addEventListener("click", () => {
   const username = usernameInput.value;
   const password = passwordInput.value;
   if (username && password) {
-    alert("Registrace úspěšná.");
+    userManager.register(username, password);
   } else {
     alert("Vyplňte uživatelské jméno a heslo.");
   }
@@ -46,11 +78,10 @@ document.getElementById("register").addEventListener("click", () => {
 document.getElementById("login").addEventListener("click", () => {
   const username = usernameInput.value;
   const password = passwordInput.value;
-  if (username && password) {
-    currentUser = username;
+  const user = userManager.login(username, password);
+  if (user) {
+    currentUser = user;
     renderApp();
-  } else {
-    alert("Neplatné přihlašovací údaje.");
   }
 });
 
