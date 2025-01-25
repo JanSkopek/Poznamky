@@ -51,9 +51,39 @@ class UserManager {
   }
 }
 
+// Třída pro správu poznámek
+class NoteManager {
+  constructor(userManager, username) {
+    this.userManager = userManager;
+    this.username = username;
+    this.notes = this.userManager.users[username].notes;
+  }
+
+  addNote(title, content) {
+    const id = Date.now();
+    this.notes.push({ id, title, content });
+    this.saveNotes();
+  }
+
+  deleteNote(id) {
+    this.notes = this.notes.filter(note => note.id !== id);
+    this.saveNotes();
+  }
+
+  saveNotes() {
+    this.userManager.users[this.username].notes = this.notes;
+    this.userManager.saveUsers();
+  }
+
+  getNotes() {
+    return this.notes;
+  }
+}
+
 // Inicializace správců
 const userManager = new UserManager();
 let currentUser = null;
+let noteManager = null;
 
 // DOM prvky
 const authDiv = document.getElementById("auth");
@@ -81,6 +111,7 @@ document.getElementById("login").addEventListener("click", () => {
   const user = userManager.login(username, password);
   if (user) {
     currentUser = user;
+    noteManager = new NoteManager(userManager, currentUser);
     renderApp();
   }
 });
@@ -88,6 +119,7 @@ document.getElementById("login").addEventListener("click", () => {
 // Odhlášení
 document.getElementById("logout").addEventListener("click", () => {
   currentUser = null;
+  noteManager = null;
   renderAuth();
 });
 
@@ -96,7 +128,7 @@ document.getElementById("addNote").addEventListener("click", () => {
   const title = noteTitleInput.value;
   const content = noteContentInput.value;
   if (title && content) {
-    alert("Poznámka přidána.");
+    noteManager.addNote(title, content);
     noteTitleInput.value = "";
     noteContentInput.value = "";
   } else {
@@ -115,6 +147,14 @@ function renderApp() {
   authDiv.style.display = "none";
   appDiv.style.display = "block";
 }
+
+// Odstranění poznámky
+window.deleteNote = (id) => {
+  const confirmDelete = confirm("Opravdu chcete tuto poznámku odstranit?");
+  if (confirmDelete) {
+    noteManager.deleteNote(id);
+  }
+};
 
 // Spuštění
 renderAuth();
