@@ -161,6 +161,7 @@ function renderNotes() {
       <h3>${note.title}</h3>
       <p>${note.content}</p>
       <button onclick="deleteNote(${note.id})">Smazat</button>
+      <button onclick="editNote(${note.id})">Upravit</button>
     `;
     notesDiv.appendChild(noteDiv);
   });
@@ -172,6 +173,16 @@ window.deleteNote = (id) => {
   if (confirmDelete) {
     noteManager.deleteNote(id);
     renderNotes();
+  }
+};
+
+// Úprava poznámky
+window.editNote = (id) => {
+  const note = noteManager.getNotes().find(n => n.id === id);
+  if (note) {
+    noteTitleInput.value = note.title;
+    noteContentInput.value = note.content;
+    noteManager.deleteNote(id);
   }
 };
 
