@@ -131,6 +131,7 @@ document.getElementById("addNote").addEventListener("click", () => {
     noteManager.addNote(title, content);
     noteTitleInput.value = "";
     noteContentInput.value = "";
+    renderNotes();
   } else {
     alert("Vyplňte název a obsah poznámky.");
   }
@@ -146,6 +147,23 @@ function renderAuth() {
 function renderApp() {
   authDiv.style.display = "none";
   appDiv.style.display = "block";
+  renderNotes();
+}
+
+// Zobrazení poznámek
+function renderNotes() {
+  notesDiv.innerHTML = "";
+  const notes = noteManager.getNotes();
+  notes.forEach(note => {
+    const noteDiv = document.createElement("div");
+    noteDiv.className = "note";
+    noteDiv.innerHTML = `
+      <h3>${note.title}</h3>
+      <p>${note.content}</p>
+      <button onclick="deleteNote(${note.id})">Smazat</button>
+    `;
+    notesDiv.appendChild(noteDiv);
+  });
 }
 
 // Odstranění poznámky
@@ -153,6 +171,7 @@ window.deleteNote = (id) => {
   const confirmDelete = confirm("Opravdu chcete tuto poznámku odstranit?");
   if (confirmDelete) {
     noteManager.deleteNote(id);
+    renderNotes();
   }
 };
 

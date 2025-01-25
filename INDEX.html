@@ -4,6 +4,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aplikace Poznamek</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(120deg, #f6d365, #fda085);
+      color: #333;
+      text-align: center;
+    }
+
+    h2 {
+      color: #000000;
+      margin-bottom: 20px;
+    }
+
+    #auth, #app {
+      margin: 50px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    input, textarea, button {
+      width: calc(100% - 20px);
+      margin: 10px auto;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      background: #fda085;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #f6d365;
+    }
+
+    #notes .note {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      text-align: left;
+      white-space: pre-wrap;
+    }
+
+    #notes .note h3 {
+      margin: 0 0 10px 0;
+      font-weight: bold;
+    }
+
+    #notes .note p {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+    }
+
+    #notes .note button {
+      display: inline-block;
+      margin: 5px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    #notes .note button:hover {
+      background: #ff4d4d;
+    }
+  </style>
 </head>
 <body>
   <script src="MAIN.js"></script>
